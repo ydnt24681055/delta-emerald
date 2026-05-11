@@ -27,39 +27,13 @@ jobs:
           cd ..
 
       - name: Build ROM
-        run: make -j$(nproc)
+        # COMPARE=0 allows the build to finish without needing a base ROM file
+        run: make -j$(nproc) COMPARE=0
 
-     - name: Upload ROM
+      - name: Upload ROM
         uses: actions/upload-artifact@v4
         with:
           name: delta-emerald-rom
+          # This catches any .gba file produced by the compiler
           path: "*.gba"
-      
-   
-  
-     
-      
-     
-   
-
- 
-      
-       
-
-    
-      
-        
-        
           
-          
-
-      
-       
- 
-     
-          
-
-     
-        
-
-      
