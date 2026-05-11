@@ -29,12 +29,11 @@ jobs:
           cd ..
 
       - name: Build ROM
-        run: |
-          make clean
-          make -j$(nproc) COMPARE=0
+        run: make -j$(nproc) COMPARE=0
 
       - name: Upload ROM
         uses: actions/upload-artifact@v4
         with:
           name: delta-emerald-rom
           path: "*.gba"
+          
