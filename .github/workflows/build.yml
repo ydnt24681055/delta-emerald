@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ delta-emerald ]
   pull_request:
-    branches: [ main ]
+    branches: [ delta-emerald ]
 
 jobs:
   build:
@@ -12,11 +12,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: delta-emerald
 
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libpng-dev libelf-dev gcc-arm-none-eabi
+          sudo apt-get install -y build-essential libpng-dev libelf-dev gcc-arm-none-eabi gperf
 
       - name: Install agbcc
         run: |
@@ -27,13 +29,13 @@ jobs:
           cd ..
 
       - name: Build ROM
-        # COMPARE=0 allows the build to finish without needing a base ROM file
-        run: make -j$(nproc) COMPARE=0
+        run: |
+          make clean
+          make -j$(nproc) COMPARE=0
 
       - name: Upload ROM
         uses: actions/upload-artifact@v4
         with:
           name: delta-emerald-rom
-          # This catches any .gba file produced by the compiler
           path: "*.gba"
           
